@@ -81,11 +81,16 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                <img src="./img/pulse.png" alt="LaraFitness Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8" width="300" height="300">
+                </div>
+
+                <div class="title m-b-md">
+                    Evolve Fitness App
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
+                    <a href="https://laravel.com/docs">Home</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
                     <a href="https://blog.laravel.com">Blog</a>
@@ -93,7 +98,6 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://vapor.laravel.com">Vapor</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
-
                     <a href="https://thekairosinitiative.org">TKS</a>
                 </div>
             </div>
