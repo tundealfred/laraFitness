@@ -1,22 +1,3 @@
-<script>
-    export default {
-      data(){
-        return{
-          form: new Form({
-            name :'',
-            email:'',
-            password:'',
-            type:'',
-            bio:'',
-            photo:'',
-          })
-        }
-      },
-        mounted() {
-            console.log('Component mounted.')
-        }
-    }
-</script>
 
 <template>
     <div class="container">
@@ -26,10 +7,9 @@
               <div class="card-header">
                 <h3 class="card-title">Users Table</h3>
                 <div class="card-tools">
-                  <div>
 
+                  <div>
                     <button class="btn btn-success" data-toggle="modal" data-target="#addNew">Add New <i class="fas fa-plus"></i></button>
-                  
                   </div>
                 </div>
               </div>
@@ -42,24 +22,31 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>Type</th>
+                      <th>Registered At</th>
                       <th>Modify</th>
                     </tr>
+
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>183</td>
-                      <td>John Doe</td>
-                      <td>11-7-2014</td>
-                      <td><span class="tag tag-success">Approved</span></td>
-                      <td>
+                  <tr v-for="user in users.data" :key="user.id">
 
-                        <a href="#">
-                          <i class="fas fa-edit"></i>
-                           /
-                          <i class="fas fa-trash text-red"></i>
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.type | upText}}</td>
+                    <td>{{user.created_at | myDate}}</td>
+
+                        <td>
+                        <a href="#" @click="editModal(user)">
+                            <i class="fa fa-edit text-blue"></i>
                         </a>
-                      </td>
-                    </tr>
+                        /
+                        <a href="#" @click="deleteUser(user.id)">
+                            <i class="fa fa-trash text-red"></i>
+                        </a>
+                        </td>
+
+                  </tr>
                   </tbody>
                 </table>
               </div>
@@ -79,6 +66,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
+      <form @submit.prevent="createUser">
       <div class="modal-body">
            <div class="form-group">
                <input v-model="form.name" type="text" name="name"
@@ -121,11 +110,93 @@
       </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Create</button>
+        <button type="Submit" class="btn btn-primary">Create</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
 
     </div>
 </template>
+
+<script>
+    export default {
+      data(){
+        return{
+          editmode: false,
+          users:{},
+          form: new Form({
+            id:'',
+            name :'',
+            email:'',
+            password:'',
+            type:'',
+            bio:'',
+            photo:'',
+          })
+        }
+      },
+
+        methods:{
+
+
+          deleteUser(id){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        // Send request to the server
+                         if (result.value) {
+                                this.form.delete('api/user/'+id).then(()=>{
+                                        Swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                        )
+                                    Fire.$emit('AfterCreate');
+                                }).catch(()=> {
+                                    Swal.fire("Failed!", "There was something wrong!.", "warning");
+                                });
+                         }
+                    })
+            },
+          loadUsers(){
+               // if(this.$gate.isAdminOrAuthor()){
+                    axios.get("api/user").then(({ data }) => (this.users = data));
+                },
+          createUser(){
+            this.$Progress.start()
+
+            this.form.post('api/user')
+            .then(()=>{
+                Fire.$emit('AfterCreate');
+                $('#addNew').modal('hide')
+
+                Toast.fire({
+                  icon: 'success',
+                  title: 'User Created in successfully'
+                })
+                this.$Progress.finish();
+
+             })
+             .catch(()=>{
+
+             })
+          }
+        },
+
+        created() {
+          this.loadUsers();
+          Fire.$on('AfterCreate',() => {
+               this.loadUsers();
+          });
+        //  setInterval(( )=> this.loadUsers(),3000);
+        }
+    }
+</script>

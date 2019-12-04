@@ -63,7 +63,9 @@
             }
         </style>
     </head>
+
     <body>
+        
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
@@ -96,7 +98,10 @@
                     <a href="https://blog.laravel.com">Blog</a>
 
                 </div>
+
+                
             </div>
         </div>
     </body>
+    
 </html>

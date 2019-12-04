@@ -29,3 +29,7 @@ Route::get('{path}',"HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' )
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
