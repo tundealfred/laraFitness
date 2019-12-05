@@ -45,7 +45,7 @@
                         <div class="description-block">
                         <h5 class="description-header">35</h5>
                         <span class="description-text">Age</span>
-                        </div>
+                    </div>
                         <!-- /.description-block -->
                     </div>
                     <!-- /.col -->
